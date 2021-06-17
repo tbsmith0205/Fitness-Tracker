@@ -30,3 +30,32 @@ router.put("/api/workouts/:id", (req, res) => {
       res.json(err);
     });
 });
+
+// workouts from last 7 days
+router.get("/api/workouts/range", (req, res) => {
+  db.Workout.aggregate()
+    .addFields({ toatlDuration: { $sum: "$execrises.duration" } })
+    .sort({ day: -1 })
+    .limit(7)
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+});
+
+// get most recent workout
+router.get("/api/workouts", (req, res) => {
+  db.Workout.aggregate()
+    .addFields({ toatlDuration: { $sum: "$execrises.duration" } })
+
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+});
