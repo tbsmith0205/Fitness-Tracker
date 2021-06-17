@@ -33,8 +33,8 @@ router.put("/api/workouts/:id", (req, res) => {
 // workouts from last 7 days
 router.get("/api/workouts/range", (req, res) => {
   db.Workout.aggregate()
-    .addFields({ toatlDuration: { $sum: "$execrises.duration" } })
-    .sort({ day: -1 })
+    .addFields({ totalDuration: { $sum: "$execrises.duration" } })
+    .sort({ _id: -1 })
     .limit(7)
     .then((dbWorkout) => {
       res.json(dbWorkout);
@@ -48,7 +48,7 @@ router.get("/api/workouts/range", (req, res) => {
 // get most recent workout
 router.get("/api/workouts", (req, res) => {
   db.Workout.aggregate()
-    .addFields({ toatlDuration: { $sum: "$execrises.duration" } })
+    .addFields({ totalDuration: { $sum: "$execrises.duration" } })
 
     .then((dbWorkout) => {
       res.json(dbWorkout);
